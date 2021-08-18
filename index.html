@@ -1,0 +1,122 @@
+<!doceventname html>
+<html>
+  <head>
+    <title>game on line</title>
+	<link rel="shortcut icon" href="#" />
+  </head>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      
+        var socket;
+		
+		
+		
+
+	function setWebViewString(d){
+		if(window.AppInventor){
+			window.AppInventor.setWebViewString(JSON.stringify(d));
+		}
+	}
+	
+	function connect(nsp){
+		socket= io("/" + nsp);
+		socket.on('connect', function () {
+			var data ={};
+			data.eventname="connected";
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+		
+		socket.on('disconnect', function (reason) {
+			var data ={};
+			data.eventname="disconnected";
+			data.reason = reason;
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+		
+		socket.on("logedin", function(data){
+			data.eventname="logedin";
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+
+		
+		socket.on("matched", function(data){
+			data.eventname="matched";
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+		
+		socket.on("gotmessage", function(data){
+			data.eventname="gotmessage";
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+		
+		socket.on("joinedroom", function(data){
+			data.eventname="joinedroom";
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+		
+		socket.on("leftroom", function(data){
+			data.eventname="leftroom";
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+		
+		socket.on("otherleftroom", function(data){
+			data.eventname="otherleftroom";
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+		
+		socket.on("goterror", function(data){
+			data.eventname="goterror";
+			console.log(JSON.stringify(data));
+			setWebViewString(data);
+		});
+	}
+
+	function login(username){
+		socket.emit("login", username);
+	}
+	
+	function startmatch(){
+		socket.emit("startmatch");
+
+		
+	}
+	
+	function cancelmatch(){
+		socket.emit("cancelmatch");
+		
+	}
+	  	  
+	function sendmessage( title, content){
+		socket.emit("sendmessage",  title, content);
+
+	  }
+	  
+	function leaveroom(){
+		socket.emit("leaveroom");
+	}
+	
+	function joinroom(roomname){
+		socket.emit("joinroom", roomname);
+	}
+	
+	function disconnect(){
+		socket.close();
+	}
+	
+	function setmaxuser(maxuser){
+		socket.emit("setmaxuser", maxuser);
+
+	}
+	
+    </script>
+  </body>
+</html>
